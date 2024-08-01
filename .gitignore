@@ -1,0 +1,33 @@
+# Node modules directory
+node_modules/
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Environment variables
+.env
+
+# Production build directory
+dist/
+build/
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.swp
+
+# IDE or editor-specific files
+.vscode/
+.idea/
+
+# TypeScript
+*.tsbuildinfo
+
+# Debugging
+debug.log
+yarn-error.log
