@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-const MONGO_URI = 'mongodb://localhost:27017/your-database-name';
+const MONGO_URI = `mongodb://username:password@host:port/database`;
 
 const dbConnection = async (): Promise<void> => {
   try {
