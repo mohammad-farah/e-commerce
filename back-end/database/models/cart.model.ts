@@ -15,4 +15,4 @@ const CartSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default { Cart : mongoose.model<Cart>('Cart', CartSchema) };
+export default mongoose.model<Cart>('Cart', CartSchema) ;

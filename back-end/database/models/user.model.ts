@@ -11,4 +11,4 @@ const UserSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-export default { Book : mongoose.model<User>('User', UserSchema) };
+export default  mongoose.model<User>('User', UserSchema) ;
