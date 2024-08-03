@@ -1,5 +1,5 @@
 import { Context , Next } from "koa"
-import { creatingFailureBody } from '../utils/resBodies'
+import { raiseWarning } from '../utils/resBodies'
 import User from '../database/models/user.model';
 
 
@@ -10,14 +10,14 @@ interface RequestBody {
 }
 
 
-export const  registrationValidation = async (ctx : Context, next : Next ) => {
+export const  registrationValidator = async (ctx : Context, next : Next ) => {
     
     const user = ctx.request.body as RequestBody;
 
     // check data availability
     if (!user.email) { 
         ctx.response.status = 400;
-        ctx.response.body = creatingFailureBody('email is required');
+        ctx.response.body = raiseWarning('email is required');
         return
     }
 
@@ -25,21 +25,21 @@ export const  registrationValidation = async (ctx : Context, next : Next ) => {
     // const existingUser = await User.findOne({ email: user.email });
     // if (existingUser) {
     //     ctx.status = 400;
-    //     ctx.body = creatingFailureBody('Email already in use');
+    //     ctx.body = raiseWarning('Email already in use');
     //     return;
     // }
 
     // check username availabilty
     if (!user.username) {
         ctx.response.status = 400;
-        ctx.response.body = creatingFailureBody('username is required');
+        ctx.response.body = raiseWarning('username is required');
         return
     }
 
     
     if (!user.password) {
         ctx.response.status = 400;
-        ctx.response.body = creatingFailureBody('password is required')
+        ctx.response.body = raiseWarning('password is required')
         return;
     }
 

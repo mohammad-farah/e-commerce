@@ -1,8 +1,19 @@
-export const creatingFailureBody = (  messeage : string ) => {
+interface WarningResponse {
+    status : string,
+    message : string
+}
+
+interface SuccessResponse {
+    status : string,
+    message : string,
+    data : any[]
+}
+
+export const raiseWarning = (  messeage : string ) : WarningResponse => {
     return { status : 'failed', message : messeage }
 }
 
 
-export const creatingSuccessBody = ( message: string , data : any ) => {
+export const raiseSuccess = ( message: string , data : any ) : SuccessResponse => {
     return { status : 'success' , message : message, data : data }
 }
