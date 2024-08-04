@@ -3,8 +3,8 @@ import { Context , Next } from 'koa'
 
 // custom modules and functionality
 import User from '../database/models/user.model';
-import { raiseWarning } from '../utils/resBodies'
-import { hashPassword } from '../utils/genHash';
+import { raiseWarning } from '../utils/response.beautifier'
+import { hashPassword } from '../utils/hash.generator';
 
 
 interface RequestBody {

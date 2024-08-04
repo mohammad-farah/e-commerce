@@ -4,9 +4,8 @@ import { Context } from 'koa'
 import User from '../database/models/user.model';
 
 // custom functionalities
-import { generateToken } from '../utils/genToken';
-import { hashPassword } from './../utils/genHash';
-import { raiseWarning, raiseSuccess } from '../utils/resBodies'
+import { generateToken } from '../utils/token.generator';
+import { raiseSuccess } from '../utils/response.beautifier'
 
 
 
@@ -23,7 +22,7 @@ interface ResponseBody extends BaseBody {
 }
 
 
-export const loginController = async (ctx: Context) => {
+export const login = async (ctx: Context) => {
    
     try{
         
@@ -39,7 +38,7 @@ export const loginController = async (ctx: Context) => {
         } 
    
         ctx.status = 200;
-        ctx.body = raiseSuccess('User logined successfully' , response );
+        ctx.body = raiseSuccess('User logined successfully' ,  { user : response } );
    
     }catch( error ){
         console.error(`ERROR : ${error}`);

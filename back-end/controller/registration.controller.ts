@@ -4,9 +4,9 @@ import { Context } from 'koa'
 import User from '../database/models/user.model';
 
 // custom functionalites
-import { generateToken } from '../utils/genToken';
-import { hashPassword } from '../utils/genHash';
-import { raiseSuccess } from '../utils/resBodies'
+import { generateToken } from '../utils/token.generator';
+import { hashPassword } from '../utils/hash.generator';
+import { raiseSuccess } from '../utils/response.beautifier'
 
 interface BaseBody {
     username: string;
@@ -22,7 +22,7 @@ interface ResponseBody extends BaseBody {
 }
 
 
-export const  registrationController = async (ctx: Context) => {
+export const  registration = async (ctx: Context) => {
 
     try {
 
@@ -51,7 +51,7 @@ export const  registrationController = async (ctx: Context) => {
         }
 
         ctx.status = 200;
-        ctx.body = raiseSuccess('User registered successfully', response);
+        ctx.body = raiseSuccess('User registered successfully', { user : response});
         
 
     }catch( error ){

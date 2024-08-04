@@ -1,11 +1,45 @@
+// routes/products.routes.ts
 import Router from 'koa-router';
 
+import {
+  getCategories,
+  getProductsByCategory,
+  getProductsByCategoryWithPagination,
+  createProduct,
+  updateProduct,
+  deleteProduct,
+} from '../controller/products.controller';
 
-const product : Router =  new Router();
 
 
-product.get('/' , async (ctx) => {
-    ctx.body = 'welcome to products'
-});
+const router = new Router();
 
-export default product;
+// GET methods
+router.get('/categories', 
+    getCategories
+);
+
+router.get('/category/:category',
+     getProductsByCategory
+);
+
+router.get('/category/:category/page',
+    getProductsByCategoryWithPagination
+);
+
+// POST method
+router.post('/',
+    createProduct
+);
+
+// PUT method
+router.put('/:id', 
+    updateProduct
+);
+
+// DELETE method
+router.delete('/:id',
+    deleteProduct
+);
+
+export default router;
