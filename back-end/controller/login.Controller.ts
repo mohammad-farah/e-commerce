@@ -28,12 +28,9 @@ export const loginController = async (ctx: Context) => {
     try{
         
         const user = ctx.request.body as RequestBody;
-
-        // Hash the password with bcrypt 
-        const hashedPassword = await hashPassword(user.password);
-        
+           
         // generate access token for user
-        const token = generateToken( user.email , hashedPassword , 'user') // must be from the database
+        const token = generateToken( ctx.userData.id , ctx.userData.pwd , ctx.userData.role);
         
         // Send a success response
         const response : ResponseBody = {
@@ -41,14 +38,11 @@ export const loginController = async (ctx: Context) => {
             token : token
         } 
    
-        ctx.status = 201;
+        ctx.status = 200;
         ctx.body = raiseSuccess('User logined successfully' , response );
    
     }catch( error ){
-
-        ctx.status = 400;
-        ctx.body = raiseWarning('Internal Error');
-    
+        console.error(`ERROR : ${error}`);
     }
 
 }

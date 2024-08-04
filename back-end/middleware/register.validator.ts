@@ -16,30 +16,30 @@ export const  registrationValidator = async (ctx : Context, next : Next ) => {
 
     // check data availability
     if (!user.email) { 
-        ctx.response.status = 400;
+        ctx.response.status = 422;
         ctx.response.body = raiseWarning('email is required');
         return
     }
 
     // Check if a user with the same email already exists
-    // const existingUser = await User.findOne({ email: user.email });
-    // if (existingUser) {
-    //     ctx.status = 400;
-    //     ctx.body = raiseWarning('Email already in use');
-    //     return;
-    // }
+    const existingUser = await User.findOne({ email: user.email });
+    if (existingUser) {
+        ctx.status = 422;
+        ctx.body = raiseWarning('Email already in use');
+        return;
+    }
 
     // check username availabilty
     if (!user.username) {
-        ctx.response.status = 400;
-        ctx.response.body = raiseWarning('username is required');
+        ctx.response.status = 422;
+        ctx.response.body = raiseWarning('Username is required');
         return
     }
 
     
     if (!user.password) {
         ctx.response.status = 400;
-        ctx.response.body = raiseWarning('password is required')
+        ctx.response.body = raiseWarning('Password is required')
         return;
     }
 

@@ -6,7 +6,7 @@ import User from '../database/models/user.model';
 // custom functionalites
 import { generateToken } from '../utils/genToken';
 import { hashPassword } from '../utils/genHash';
-import { raiseWarning, raiseSuccess } from '../utils/resBodies'
+import { raiseSuccess } from '../utils/resBodies'
 
 interface BaseBody {
     username: string;
@@ -33,17 +33,15 @@ export const  registrationController = async (ctx: Context) => {
 
 
         // Create a new user instance
-        // const newUser = new User({
-        //     username: user.username,
-        //     email: user.email,
-        //     password: hashedPassword,
-        // });
+        const newUser = await new User({
+            username: user.username,
+            email: user.email,
+            password: hashedPassword,
+        }).save();
 
-        // await newUser.save();
-
-
+        
         // generate access token for user
-        const token = generateToken(user.email, hashedPassword, 'user') // must be from the database
+        const token = generateToken( newUser.id , newUser.password , newUser.role ) // must be from the database
 
         // Send a success response
         const response: ResponseBody = {
@@ -52,14 +50,12 @@ export const  registrationController = async (ctx: Context) => {
             token: token
         }
 
-        ctx.status = 201;
+        ctx.status = 200;
         ctx.body = raiseSuccess('User registered successfully', response);
+        
 
-    } catch (error) {
-
-        ctx.status = 400;
-        ctx.body = raiseWarning('Internatl Error');
-
+    }catch( error ){
+        console.error(`ERROR : ${error}`);
     }
 
 

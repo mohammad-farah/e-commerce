@@ -19,15 +19,15 @@ export const loginValidator = async (ctx: Context, next: Next) : Promise<void> =
 
     // check data availability
     if (!user.email) { 
-        ctx.response.status = 400;
-        ctx.response.body = raiseWarning('email is required');
+        ctx.response.status = 422;
+        ctx.response.body = raiseWarning('Email is required');
         return
     }
 
     // check data availability
     if (!user.password) { 
-        ctx.response.status = 400;
-        ctx.response.body = raiseWarning('password is required');
+        ctx.response.status = 422;
+        ctx.response.body = raiseWarning('Password is required');
         return
     }
 
@@ -35,8 +35,8 @@ export const loginValidator = async (ctx: Context, next: Next) : Promise<void> =
     const existUser = await User.findOne({ email: user.email });
 
     if (!existUser) {
-        ctx.status = 400;
-        ctx.body = raiseWarning('this user is not registered yet');
+        ctx.status = 406;
+        ctx.body = raiseWarning('This user is not registered yet');
         return;
     }
 
@@ -45,9 +45,17 @@ export const loginValidator = async (ctx: Context, next: Next) : Promise<void> =
 
     // check password compatibility
     if ( existUser.password !== hashedPassword) {
-        ctx.status = 400;
-        ctx.body = raiseWarning('the password is incorrect');
+        ctx.status = 406;
+        ctx.body = raiseWarning('password is incorrect');
         return;
+    }
+
+    // reduce the requests to the database
+    // for generating tokens at the controller which is the next middleware
+    ctx.userData = {
+        id : existUser.id,
+        pwd : existUser.password,
+        role: existUser.role
     }
 
     await next();

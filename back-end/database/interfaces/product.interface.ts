@@ -6,6 +6,7 @@ export interface Product extends Document {
   price: number;
   category: string;
   image: string;
+  rate?: number
   createdAt: Date;
   updatedAt: Date;
 }

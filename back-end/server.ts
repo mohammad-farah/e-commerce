@@ -4,6 +4,15 @@ import Router  from 'koa-router';
 import cors from 'koa2-cors'
 import dotenv from 'dotenv'; 
 
+// database connection modules
+import dbConnection from './database/db.connection';
+
+// routes modules 
+import user from './routes/user.route'
+import product from './routes/product.route';
+import cart from './routes/cart.route';
+import order from './routes/order.route';
+
 const app = new Koa();
 const router : Router = new Router();
 
@@ -11,19 +20,14 @@ const router : Router = new Router();
 app.use(bodyParser())
 app.use(cors ({ origin : '*' }))
 
+// Initiate database connection
+dbConnection();
 
 
-// routes modules 
-import register from './routes/register.route'
-import login from './routes/login.route';
-
-
-router.use('/register' , register.routes());
-router.use('/login' , login.routes());
-router.use('/products' , login.routes());
-router.use('/carts' , login.routes());
-router.use('/cart' , login.routes());
-
+router.use('/user' , user.routes());
+router.use('/products' , product.routes());
+router.use('/carts' , cart.routes());
+router.use('/orders' , order.routes());
 
 
 // high route middleware

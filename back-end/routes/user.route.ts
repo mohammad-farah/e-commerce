@@ -4,13 +4,20 @@ import Router from 'koa-router';
 // custom modules
 import { registrationValidator } from '../middleware/register.validator';
 import { registrationController } from '../controller/registration.controller';
+import { loginValidator } from '../middleware/login.validator';
+import { loginController } from '../controller/login.Controller';
 
 
-const register: Router = new Router();
+const user : Router = new Router();
 
-register.post('/', 
+user.post('/register', 
     registrationValidator,
     registrationController 
 );
 
-export default register;
+user.post('/login', 
+    loginValidator,
+    loginController
+);
+
+export default user;
