@@ -2,9 +2,9 @@
 import { Context , Next } from 'koa'
 
 // custom modules and functionality
-import User from '../database/models/user.model';
-import { raiseWarning } from '../utils/response.beautifier'
-import { hashPassword } from '../utils/hash.generator';
+import User from '../../database/models/user.model';
+import { raiseWarning } from '../../utils/response.beautifier'
+import { hashPassword } from '../../utils/hash.generator';
 
 
 interface RequestBody {

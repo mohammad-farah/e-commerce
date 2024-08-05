@@ -26,7 +26,7 @@ dbConnection();
 
 router.use('/user' , user.routes());
 router.use('/products' , product.routes());
-router.use('/carts' , cart.routes());
+router.use('/cart' , cart.routes());
 router.use('/orders' , order.routes());
 
 

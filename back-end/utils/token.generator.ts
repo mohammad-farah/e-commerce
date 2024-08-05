@@ -7,9 +7,9 @@ dotenv.config();
 const SECRET_KEY = process.env.SECRET_KEY || '';
 const EXPIRES_IN = process.env.EXPIRES_IN || '24h';
 
-export const generateToken =  (username : string , pasword : string,  role : string ) => {
+export const generateToken =  (userId : string , pasword : string,  role : string ) => {
     return jwt.sign( {
-        username : username,
+        id : userId,
         password : pasword,
         role : role
     }, 

@@ -2,10 +2,10 @@
 import Router from 'koa-router';
 
 // custom modules
-import { registrationValidator } from '../middleware/register.validator';
+import { registrationValidator } from '../middleware/validator.ts/register.middleware';
 import { registration } from '../controller/registration.controller';
 
-import { loginValidator } from '../middleware/login.validator';
+import { loginValidator } from '../middleware/validator.ts/login.middleware';
 import { login } from '../controller/login.controller';
 
 
