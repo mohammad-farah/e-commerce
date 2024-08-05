@@ -4,7 +4,7 @@ import { Order } from '../interfaces/order.interface';
 const OrderSchema: Schema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    products: [
+    cart: [
       {
         productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
         quantity: { type: Number, required: true },
