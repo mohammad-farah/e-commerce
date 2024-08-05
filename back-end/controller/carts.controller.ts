@@ -1,15 +1,3 @@
-
-// cart/product (ENDPOINT)
-/*
-    - check if the cart is not created, create one
-    - check if product exists
-    - check if user exists
-    - check if product is not exist, add to cart 
-    - check if product exists update quentity
-    - return the update of the cart 
-
-*/  
-
 import { Context } from 'koa';
 import { ObjectId } from 'mongoose';
 
@@ -44,7 +32,7 @@ export const addOrUpdateProductInCart = async (ctx: Context) => {
       return;
     }
 
-    // check if cart is already created
+    // check if the user has any cart
     let cart = await Cart.findOne({ userId });
     if (!cart) {
       cart = new Cart(
@@ -96,22 +84,15 @@ export const removeProductFromCart = async (ctx: Context) => {
 
       // handle the id from auth/user.middleware
       const userId = ctx.state.user.id;
-      const { productId , cartId } = ctx.params;
+      const { productId } = ctx.params;
   
       // check if cart exists
-      const cart = await Cart.findById( cartId );
+      const cart = await Cart.findOne( { userId }  );
       if (!cart) {
         ctx.status = 404;
         ctx.body = raiseWarning('Cart not found');
         return;
       }
-
-      if ( cart.userId.toString() !== userId.toString() ){
-        ctx.status = 404;
-        ctx.body = raiseWarning('not authorized to remove products from this cart');
-        return;
-      }
-  
 
       // Check if the product exists in the cart
       const existingProductIndex = cart.products.findIndex(
@@ -155,29 +136,18 @@ export const removeCart = async (ctx: Context) => {
     try {
 
       // handle the id from auth/user.middleware
-      const userId = ctx.state.user.id; 
-      const cartId  = ctx.params.cartId;
+      const userId = ctx.state.user.id as string; 
       
 
-  
       // check if cart exists
-      const cart = await Cart.findById(cartId);
+      const cart = await Cart.findOneAndDelete( { userId } );
       
       if (!cart) {
         ctx.status = 404;
         ctx.body = raiseWarning('Cart not found');
         return;
       }      
-
-      if ( cart.userId.toString() !== userId.toString() ){
-        ctx.status = 404;
-        ctx.body = raiseWarning('not authorized to delete this cart');
-        return;
-      }
-  
-      await cart.deleteOne();
       
-
       ctx.status = 200;
       ctx.body = raiseSuccess('Cart removed successfully', { cart });
       
@@ -197,11 +167,10 @@ export const getUserCart = async (ctx: Context) => {
     try {
 
       // handle the id from auth/user.middleware
-      const userId = ctx.state.user.id; 
-      const cartId  = ctx.params.cartId;
+      const userId = ctx.state.user.id as string; 
   
       // Find the user's cart
-      const cart = await Cart.findById(cartId).populate('products.productId', 'name price');
+      const cart = await Cart.findOne({ userId }).populate('products.productId', 'name price');
   
       if (!cart) {
         ctx.status = 404;
@@ -209,13 +178,6 @@ export const getUserCart = async (ctx: Context) => {
         return;
       }
 
-      if ( cart.userId.toString() !== userId.toString() ){
-        ctx.status = 404;
-        ctx.body = raiseWarning('not authorized to see this cart');
-        return;
-      }
-  
-  
       ctx.status = 200;
       ctx.body = raiseSuccess('User cart retrieved successfully', { cart });
 

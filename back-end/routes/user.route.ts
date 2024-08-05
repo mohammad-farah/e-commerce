@@ -11,12 +11,12 @@ import { login } from '../controller/login.controller';
 
 const user : Router = new Router();
 
-user.post('/register/user', 
+user.post('/register', 
     registrationValidator,
     registration 
 );
 
-user.post('/login/user', 
+user.post('/login', 
     loginValidator,
     login
 );

@@ -14,17 +14,18 @@ cart.post('/',
     addOrUpdateProductInCart
 );
 
-cart.delete('/:cartId',
+cart.delete('/',
     userAuthValidator,
     removeCart
 );
 
-cart.get('/:cartId',
+cart.get('/',
     userAuthValidator,
     getUserCart
 );
 
-cart.delete('/:cartId/product/:productId',
+
+cart.delete('/product/:productId',
      userAuthValidator,
      removeProductFromCart
 );
