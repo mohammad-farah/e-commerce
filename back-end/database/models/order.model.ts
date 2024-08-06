@@ -4,19 +4,21 @@ import { Order } from '../interfaces/order.interface';
 const OrderSchema: Schema = new Schema(
   {
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    cart: [
+    products: [
       {
         productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
         quantity: { type: Number, required: true },
       },
     ],
     totalPrice: { type: Number, required: true },
-    shippingDetails: {
+    shipping_details: {
       address: { type: String, required: true },
       city: { type: String, required: true },
-      state: { type: String, required: true },
-      zipCode: { type: String, required: true },
+      state: { type: String, default : '' },
+      zipCode: { type: String, default : '00000' },
       country: { type: String, required: true },
+      phone: { type: String, required: true },
+
     },
     status: { type: String, default: 'pending' },
   },

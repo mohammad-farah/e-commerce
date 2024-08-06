@@ -44,6 +44,7 @@ export const userAuthValidator = async (ctx: Context, next: Next) => {
       role: decoded.role,
     };
     
+    
     // Proceed to the next middleware or route handler
     await next();
 
