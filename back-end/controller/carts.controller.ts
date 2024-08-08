@@ -84,6 +84,7 @@ export const removeProductFromCart = async (ctx: Context) => {
 
       // handle the id from auth/user.middleware
       const userId = ctx.state.user.id;
+      
       const { productId } = ctx.params;
   
       // check if cart exists
