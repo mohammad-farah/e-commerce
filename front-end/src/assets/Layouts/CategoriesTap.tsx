@@ -38,7 +38,7 @@ export default function CategoriesTap({ categoryRetriever }: ComponentProps) {
     // get the name of the choosen category 
     let category = event.currentTarget.textContent as string;
     // retrieve the choosen category to the parent component as props
-    categoryRetriever(category)
+    categoryRetriever(category.toLocaleLowerCase())
 
   };
 
@@ -65,7 +65,7 @@ export default function CategoriesTap({ categoryRetriever }: ComponentProps) {
 
   return (
 
-    <Box sx={{ bgcolor: 'background.paper' }}>
+    <Box sx={{ bgcolor: 'background.paper' , my: 2 }}>
       <Tabs
         value={value}
         onChange={handleChange}

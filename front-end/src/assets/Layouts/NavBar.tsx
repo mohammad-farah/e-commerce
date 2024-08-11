@@ -1,57 +1,153 @@
-import AppBar from '@mui/material/AppBar';
+import * as React from 'react';
+import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
+import Drawer from '@mui/material/Drawer';
+import CssBaseline from '@mui/material/CssBaseline';
+import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
+import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-// import IconButton from '@mui/material/IconButton';
-// import MenuIcon from '@mui/icons-material/Menu';
-// import LoginIcon from '@mui/icons-material/Login';
-import AdminPanelSettingsSharpIcon from '@mui/icons-material/AdminPanelSettingsSharp';
-import ShoppingCartSharpIcon from '@mui/icons-material/ShoppingCartSharp';
-import  Stack  from '@mui/material/Stack';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import HomeIcon from '@mui/icons-material/Home';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import LoginIcon from '@mui/icons-material/Login';
+import HowToRegIcon from '@mui/icons-material/HowToReg';
 
-export default function NavBar() {
+const drawerWidth = 240;
+
+
+interface AppBarProps extends MuiAppBarProps {
+    open?: boolean;
+}
+
+const AppBar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== 'open',
+})<AppBarProps>(({ theme, open }) => ({
+    transition: theme.transitions.create(['margin', 'width'], {
+        easing: theme.transitions.easing.sharp,
+        duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+        width: `calc(100% - ${drawerWidth}px)`,
+        marginLeft: `${drawerWidth}px`,
+        transition: theme.transitions.create(['margin', 'width'], {
+            easing: theme.transitions.easing.easeOut,
+            duration: theme.transitions.duration.enteringScreen,
+        }),
+    }),
+}));
+
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+    justifyContent: 'flex-end',
+}));
+
+export default function SildeNavBar() {
+    const theme = useTheme();
+    const [open, setOpen] = React.useState(false);
+
+    const handleDrawerOpen = () => {
+        setOpen(true);
+    };
+
+    const handleDrawerClose = () => {
+        setOpen(false);
+    };
+
+    const MainIcons = [
+        <HomeIcon />,
+        <AdminPanelSettingsIcon />,
+        <ShoppingCartIcon />
+    ];
+
+    const AuthIcons = [<HowToRegIcon />, <LoginIcon />]
+
     return (
+        <Box sx={{ display: 'flex' }}>
 
-        <Box sx={{ flexGrow: 1 }}>
+            <CssBaseline />
 
-            <AppBar position="static">
-
+            <AppBar position="fixed" open={open}>
                 <Toolbar>
 
-                    {/* <IconButton
-                        size="large"
-                        edge="start"
+                    <IconButton
                         color="inherit"
-                        aria-label="menu"
-                        sx={{ mr: 2 }}
+                        aria-label="open drawer"
+                        onClick={handleDrawerOpen}
+                        edge="start"
+                        sx={{ mr: 2, ...(open && { display: 'none' }) }}
                     >
-
                         <MenuIcon />
 
-                    </IconButton> */}
+                    </IconButton>
 
-                    <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    <Typography variant="h6" noWrap component="div">
                         Bamptee
                     </Typography>
 
-                    <Stack spacing={3} direction='row'>
-                        {/* admin panel page */}
-                        <Button color="inherit" startIcon={<AdminPanelSettingsSharpIcon />}>Admin Panel</Button>
-                        
-                        {/* Cart Page  */}
-                        <Button color="inherit" startIcon={<ShoppingCartSharpIcon />} >Cart</Button>
-
-                        {/* Authentication Components  */}
-                        <Button color="inherit" >Login</Button>
-                        <Button color="inherit">Sign-Up</Button>
-                    </Stack>
-
-
                 </Toolbar>
-
             </AppBar>
 
+            <Drawer
+                sx={{
+                    width: drawerWidth,
+                    flexShrink: 0,
+                    '& .MuiDrawer-paper': {
+                        width: drawerWidth,
+                        boxSizing: 'border-box',
+                    },
+                }}
+                variant="persistent"
+                anchor="left"
+                open={open}
+            >
+                <DrawerHeader>
+                    <IconButton onClick={handleDrawerClose}>
+                        {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                    </IconButton>
+                </DrawerHeader>
+                <Divider />
+                <List>
+                    {['Home', 'Admin', 'Cart'].map((text, index) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton>
+                                <ListItemIcon>
+                                    {MainIcons[index]}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
+                </List>
+                <Divider />
+                <List>
+                    {
+
+                        ['sign-in', 'sign-up'].map((text, index) => (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton>
+                                    <ListItemIcon>
+                                        {AuthIcons[index]}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        ))}
+                </List>
+            </Drawer>
         </Box>
     );
 }

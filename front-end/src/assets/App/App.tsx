@@ -1,13 +1,30 @@
 import './App.css'
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
-import {LandingPage} from './../Pages/AdminPage/LandingPage';
+import SildeNavBar from './../Layouts/NavBar';
+
+import { Landing } from '../Pages/LandingPage/Landing';
+import { Admin } from '../Pages/AdminPage/Admin';
+import SignIn from '../Pages/SignInPage/SignIn';
+
 
 function App() {
 
   return (
-    <>
-      < LandingPage/>
-    </>
+    <div>
+      {/* NavBar contains the main routes  */}
+  <SildeNavBar />
+
+    <Router>
+      <Routes>
+        <Route path="/" element={< Landing/>} />
+        <Route path="/admin" element={<Admin />} />
+        <Route path="/signin" element={<SignIn />} />
+
+      </Routes>
+    </Router>
+    </div>
+ 
   )
 }
 
