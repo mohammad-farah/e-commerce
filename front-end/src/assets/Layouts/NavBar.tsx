@@ -123,7 +123,9 @@ export default function SildeNavBar() {
                 <List>
                     {['Home', 'Admin', 'Cart'].map((text, index) => (
                         <ListItem key={text} disablePadding>
-                            <ListItemButton>
+                            <ListItemButton
+                                href={text.split('-').join('').toLocaleLowerCase()}
+                            >
                                 <ListItemIcon>
                                     {MainIcons[index]}
                                 </ListItemIcon>
@@ -136,9 +138,11 @@ export default function SildeNavBar() {
                 <List>
                     {
 
-                        ['sign-in', 'sign-up'].map((text, index) => (
+                        ['Sign-in', 'Sign-up'].map((text, index) => (
                             <ListItem key={text} disablePadding>
-                                <ListItemButton>
+                                <ListItemButton
+                                    href={text.split('-').join('').toLocaleLowerCase()}
+                                >
                                     <ListItemIcon>
                                         {AuthIcons[index]}
                                     </ListItemIcon>

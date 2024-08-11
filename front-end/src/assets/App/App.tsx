@@ -6,6 +6,7 @@ import SildeNavBar from './../Layouts/NavBar';
 import { Landing } from '../Pages/LandingPage/Landing';
 import { Admin } from '../Pages/AdminPage/Admin';
 import SignIn from '../Pages/SignInPage/SignIn';
+import SignUp from '../Pages/SignUpPage/SignUp';
 
 
 function App() {
@@ -17,10 +18,11 @@ function App() {
 
     <Router>
       <Routes>
-        <Route path="/" element={< Landing/>} />
+        <Route path="*" element={<Landing />} />
+        <Route path="/home" element={< Landing/>} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/signin" element={<SignIn />} />
-
+        <Route path="/signup" element={<SignUp />} />
       </Routes>
     </Router>
     </div>

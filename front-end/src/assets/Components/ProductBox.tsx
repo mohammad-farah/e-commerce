@@ -17,12 +17,7 @@ export function Product({ ProductId, name, price }: ProductProps) {
 
   return (
 
-    <Box sx={{
-      m: () => `${10 / 6}%`,
-      width: '30%',
-      fontFamily: 'Arial'
-    }}
-    >
+    <Box sx={{ m: () => `${10 / 6}%`, width: '30%', fontFamily: 'Arial'}}>
 
       <img src='https://placehold.co/600x400' width='100%' />
 

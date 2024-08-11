@@ -11,20 +11,21 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
+import { useNavigate } from 'react-router-dom';
 
 interface User {
     email: string;
     token: string;
 }
 
-interface LoginResponseData {
+interface SignInResponseData {
     user: User;
 }
 
-interface LoginResponse {
+interface SignInResponse {
     status: string;
     message: string;
-    data: LoginResponseData;
+    data: SignInResponseData;
 }
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
@@ -32,10 +33,11 @@ const defaultTheme = createTheme();
 export default function SignIn() {
 
     const [,setCookie,] = useCookies(['token']);
+    const navigate = useNavigate();
 
     const authenticateUser = async (email: string, password: string): Promise<void> => {
         try {
-            const response = await axios.post<LoginResponse>('http://127.0.0.1:8000/user/login', {
+            const response = await axios.post<SignInResponse>('http://127.0.0.1:8000/user/login', {
                 email : email,
                 password: password,
             });
@@ -43,9 +45,12 @@ export default function SignIn() {
             // place cookies globally 
             const token = response.data.data.user.token;
             setCookie('token', token, { path: '/' });
-            
+            navigate('/home');
+
         } catch (error) {
             throw new Error('Authentication failed');
+            console.log(error);
+            
         }
     };
 
@@ -73,7 +78,7 @@ export default function SignIn() {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                    <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
                     <Typography component="h1" variant="h5">
@@ -110,7 +115,7 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item>
-                                <Link href="#" variant="body2">
+                                <Link href="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>
