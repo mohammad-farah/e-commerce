@@ -68,12 +68,15 @@ export default function SildeNavBar() {
     };
 
     const MainIcons = [
-        <HomeIcon />,
-        <AdminPanelSettingsIcon />,
-        <ShoppingCartIcon />
+        <HomeIcon color='primary' />,
+        <AdminPanelSettingsIcon color='primary' />,
+        <ShoppingCartIcon color='primary' />
     ];
 
-    const AuthIcons = [<HowToRegIcon />, <LoginIcon />]
+    const AuthIcons = [ 
+        <HowToRegIcon color='primary' />,
+        <LoginIcon color='primary' />
+    ];
 
     return (
         <Box sx={{ display: 'flex' }}>
