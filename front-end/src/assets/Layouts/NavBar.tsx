@@ -121,7 +121,7 @@ export default function SildeNavBar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Home', 'Admin', 'Cart'].map((text, index) => (
+                    {['Home', 'Dashboard', 'Cart'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton
                                 href={text.split('-').join('').toLocaleLowerCase()}

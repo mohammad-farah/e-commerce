@@ -1,13 +1,14 @@
 import axios from "axios"
 import { useState, useEffect } from "react"
 import Box from '@mui/material/Box';
-import { Product } from "../Components/ProductBox";
+import { Product } from "./ProductBox";
 
 
 interface Product {
     _id: string,
     name: string,
     price: number,
+    description: string,
     category: string,
     image: string
 }
@@ -31,7 +32,7 @@ export const ProductsContainer = ({ category }: ProductComponentProps) => {
     const [responseProducts, setResponseProducts] = useState<ProductsResponse>(
         {
             status: '', message: '', data: {
-                products: [{ _id: '', name: '', price: 0, category: '', image: '' }]
+                products: [{ _id: '', name: '', price: 0, category: '', description : '' ,  image: '' }]
             }
         }
     )
@@ -70,7 +71,11 @@ export const ProductsContainer = ({ category }: ProductComponentProps) => {
                             ProductId={p._id}
                             name={p.name}
                             price={p.price}
+                            description={p.description}
+                            image={p.image}
                             key={p._id}
+
+                            // 
                         />
                     )}
 
