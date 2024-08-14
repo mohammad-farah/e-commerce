@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "66bcc917e876b4070939586e"
+  },
+  "username": "Admin",
+  "email": "mhd.frh.bus@gmail.com",
+  "password": "$2b$12$9Xv//w8ZqvD2O9pmkF62fue80QhXzcU4gaYn1LZpD2rhx1tzhs6T6",
+  "role": "admin",
+  "createdAt": {
+    "$date": "2024-08-14T15:11:19.369Z"
+  },
+  "updatedAt": {
+    "$date": "2024-08-14T15:11:19.369Z"
+  },
+  "__v": 0
+}]
