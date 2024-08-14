@@ -22,6 +22,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
 import LogoutIcon from '@mui/icons-material/Logout';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
@@ -82,7 +83,9 @@ export default function SildeNavBar() {
     const MainIcons = [
         <HomeIcon color='primary' />,
         <AdminPanelSettingsIcon color='primary' />,
+        <ChecklistIcon color='primary' />,
         <ShoppingCartIcon color='primary' />
+        
     ];
 
     const AuthIcons = [
@@ -94,7 +97,8 @@ export default function SildeNavBar() {
     const menuItems = [
         { text: 'Home', icon: MainIcons[0], path: '/home', visible: true },
         { text: 'Dashboard', icon: MainIcons[1], path: '/dashboard', visible: role === 'admin' },
-        { text: 'Cart', icon: MainIcons[2], path: '/cart', visible: isAuthenticated && role !== 'user' }
+        { text: 'Cart', icon: MainIcons[2], path: '/cart', visible: isAuthenticated && role !== 'user' },
+        { text: 'Orders', icon: MainIcons[3], path: '/orders', visible: isAuthenticated && role !== 'user' }
     ];
 
     const authItems = isAuthenticated ? [

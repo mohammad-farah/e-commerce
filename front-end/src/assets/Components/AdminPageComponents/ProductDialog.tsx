@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Dialog, DialogActions, DialogContent, DialogTitle, Button, TextField
 } from '@mui/material';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
 import { ImageUploadButton } from './ImageUploadBtn';
 
 // Define the structure of a Product object
@@ -30,14 +30,34 @@ interface ProductDialogProps {
   defaultCategory: string;
 }
 
-// Component to display a dialog for adding, editing, or deleting a product
 export const ProductDialog: React.FC<ProductDialogProps> = ({
   open, product, action, onClose, onConfirm, setProduct, categories, defaultCategory
 }) => {
 
+  const [newCategory, setNewCategory] = useState('');
+
+  // Handle new category change
+  const handleNewCategoryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCategoryLowerCase = e.target.value.toLowerCase();
+    setNewCategory(newCategoryLowerCase);
+  };
+
   // Handle image upload and update the product state
   const handleImageUpload = (base64Image: string) => {
     setProduct(prevProduct => prevProduct ? { ...prevProduct, image: base64Image } : null);
+  };
+
+  // Handle category selection
+  const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+    setProduct(prevProduct => prevProduct ? { ...prevProduct, category: event.target.value } : null);
+  };
+
+  // Add new category
+  const addNewCategory = () => {
+    if (newCategory && !categories.includes(newCategory)) {
+      setProduct(prevProduct => prevProduct ? { ...prevProduct, category: newCategory } : null);
+      setNewCategory('');
+    }
   };
 
   return (
@@ -47,7 +67,6 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
       </DialogTitle>
       <DialogContent>
         {action !== 'delete' ? (
-          // Form to add or edit a product
           <form>
             {/* Product Name Input */}
             <TextField sx={{ my: 1 }}
@@ -58,7 +77,7 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
               type="text"
               fullWidth
               variant="outlined"
-              value={product?.name || ' '}
+              value={product?.name || ''}
               onChange={(e) => setProduct(prevProduct => prevProduct ? { ...prevProduct, name: e.target.value } : null)}
             />
 
@@ -70,23 +89,38 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
               type="number"
               fullWidth
               variant="outlined"
-              value={product?.price || ' '}
+              value={product?.price || ''}
               onChange={(e) => setProduct(prevProduct => prevProduct ? { ...prevProduct, price: Number(e.target.value) } : null)}
             />
 
             {/* Category Select Input */}
             <FormControl fullWidth sx={{ my: 1 }}>
-              <InputLabel id="demo-simple-select-label">Category</InputLabel>
+              <InputLabel id="category-select-label">Category</InputLabel>
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={defaultCategory}
+                labelId="category-select-label"
+                id="category-select"
+                value={product?.category || defaultCategory}
                 label="Category"
-                onChange={(e) => setProduct(prevProduct => prevProduct ? { ...prevProduct, category: e.target.value as string } : null)}
+                onChange={handleCategoryChange}
               >
-                {categories.map(category => <MenuItem key={category} value={category}>{category}</MenuItem>)}
+                {categories.map(category => (
+                  <MenuItem key={category} value={category}>{category}</MenuItem>
+                ))}
               </Select>
             </FormControl>
+
+            {/* New Category Input */}
+            <TextField sx={{ my: 1 }}
+              margin="dense"
+              id="new-category"
+              label="Add New Category"
+              type="text"
+              fullWidth
+              variant="outlined"
+              value={newCategory}
+              onChange={handleNewCategoryChange}
+              onBlur={addNewCategory} // Add new category when input loses focus
+            />
 
             {/* Product Description Input */}
             <TextField sx={{ my: 1 }}
@@ -96,7 +130,7 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
               type="text"
               fullWidth
               variant="outlined"
-              value={product?.description || ' '}
+              value={product?.description || ''}
               onChange={(e) => setProduct(prevProduct => prevProduct ? { ...prevProduct, description: e.target.value } : null)}
             />
 
@@ -104,12 +138,10 @@ export const ProductDialog: React.FC<ProductDialogProps> = ({
             <ImageUploadButton onImageUpload={handleImageUpload} />
           </form>
         ) : (
-          // Confirmation message for deleting a product
           <p>Are you sure you want to delete the product <strong>{product?.name}</strong>?</p>
         )}
       </DialogContent>
       <DialogActions>
-        {/* Cancel and Confirm Buttons */}
         <Button onClick={onClose} variant='outlined'>Cancel</Button>
         <Button onClick={onConfirm} color="primary" variant="contained">
           {action === 'edit' ? 'Save Changes' : action === 'add' ? 'Add Product' : 'Delete'}
