@@ -21,7 +21,9 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useNavigate } from 'react-router-dom';
+import { useCookies } from 'react-cookie';
 
 const drawerWidth = 240;
 
@@ -58,6 +60,10 @@ export default function SildeNavBar() {
     const theme = useTheme();
     const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
+    const [cookies, , removeCookie] = useCookies(['token', 'role']);
+
+    const isAuthenticated = Boolean(cookies.token); // Check if the token exists
+    const role = cookies.role || ''; // Get the user role
 
     const handleDrawerOpen = () => {
         setOpen(true);
@@ -65,6 +71,12 @@ export default function SildeNavBar() {
 
     const handleDrawerClose = () => {
         setOpen(false);
+    };
+
+    const handleSignOut = () => {
+        removeCookie('token', { path: '/' }); // Remove the token cookie
+        removeCookie('role', { path: '/' }); // Remove the role cookie
+        navigate('/signin'); // Redirect to sign-in page
     };
 
     const MainIcons = [
@@ -75,17 +87,28 @@ export default function SildeNavBar() {
 
     const AuthIcons = [
         <HowToRegIcon color='primary' />,
-        <LoginIcon color='primary' />
+        <LoginIcon color='primary' />,
+        <LogoutIcon color='primary' />
+    ];
+
+    const menuItems = [
+        { text: 'Home', icon: MainIcons[0], path: '/home', visible: true },
+        { text: 'Dashboard', icon: MainIcons[1], path: '/dashboard', visible: role === 'admin' },
+        { text: 'Cart', icon: MainIcons[2], path: '/cart', visible: isAuthenticated && role !== 'user' }
+    ];
+
+    const authItems = isAuthenticated ? [
+        { text: 'Sign-Out', icon: AuthIcons[2], action: handleSignOut }
+    ] : [
+        { text: 'Sign-in', icon: AuthIcons[1], path: '/signin', action: () => navigate('/signin') },
+        { text: 'Sign-up', icon: AuthIcons[0], path: '/signup', action: () => navigate('/signup') }
     ];
 
     return (
         <Box sx={{ display: 'flex' }}>
-
             <CssBaseline />
-
             <AppBar position="fixed" open={open}>
                 <Toolbar>
-
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -95,14 +118,11 @@ export default function SildeNavBar() {
                     >
                         <MenuIcon />
                     </IconButton>
-
                     <Typography variant="h6" noWrap component="div">
                         Bamptee
                     </Typography>
-
                 </Toolbar>
             </AppBar>
-
             <Drawer
                 sx={{
                     width: drawerWidth,
@@ -123,28 +143,26 @@ export default function SildeNavBar() {
                 </DrawerHeader>
                 <Divider />
                 <List>
-                    {['Home', 'Dashboard', 'Cart'].map((text, index) => (
-                        <ListItem key={text} disablePadding>
-                            <ListItemButton
-                                onClick={() => navigate(`/${text.split('-').join('').toLocaleLowerCase()}`)}
-                            >
-                                <ListItemIcon>
-                                    {MainIcons[index]}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItemButton>
-                        </ListItem>
+                    {menuItems.map(({ text, icon, path, visible }) => (
+                        visible && (
+                            <ListItem key={text} disablePadding>
+                                <ListItemButton onClick={() => navigate(path)}>
+                                    <ListItemIcon>
+                                        {icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={text} />
+                                </ListItemButton>
+                            </ListItem>
+                        )
                     ))}
                 </List>
                 <Divider />
                 <List>
-                    {['Sign-in', 'Sign-up'].map((text, index) => (
+                    {authItems.map(({ text, icon, action }) => (
                         <ListItem key={text} disablePadding>
-                            <ListItemButton
-                                onClick={() => navigate(`/${text.split('-').join('').toLocaleLowerCase()}`)}
-                            >
+                            <ListItemButton onClick={action}>
                                 <ListItemIcon>
-                                    {AuthIcons[index]}
+                                    {icon}
                                 </ListItemIcon>
                                 <ListItemText primary={text} />
                             </ListItemButton>

@@ -53,7 +53,7 @@ export const ProductTable: React.FC<ProductTableProps> = ({ products, onEdit, on
               <TableCell align="right">
 
                 {/* Edit and Delete action buttons */}
-                <IconButton sx={{ color: '#000000' }} onClick={() => onEdit(product)}>
+                <IconButton color='primary' onClick={() => onEdit(product)}>
                   <Edit />
                 </IconButton>
 

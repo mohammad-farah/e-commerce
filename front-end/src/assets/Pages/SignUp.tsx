@@ -15,12 +15,11 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-// Define the structure of user data and response types
 interface User {
     username: string;
     email: string;
     token: string;
-    role: 'user' | 'admin'; // Include the role
+    role: 'user' | 'admin'; // Include role in the user object
 }
 
 interface SignupData {
@@ -33,7 +32,6 @@ interface SignupResponse {
     data: SignupData;
 }
 
-// Create a default theme for the application
 const defaultTheme = createTheme();
 
 export default function SignUp() {
@@ -51,7 +49,7 @@ export default function SignUp() {
             const response = await axios.post<SignupResponse>('http://127.0.0.1:8000/user/register', {
                 email,
                 password,
-                username
+                username,
             });
 
             // Extract the user data and set it in cookies
@@ -65,8 +63,8 @@ export default function SignUp() {
             setSnackbarOpen(true);
 
             // Wait for the Snackbar to be visible
-            setTimeout(() => {
-                navigate('/home');
+            setTimeout(() => {              
+                    navigate('/home');
             }, 3000); // Adjust the delay (3000 ms = 3 seconds) as needed
 
         } catch (error) {
@@ -94,28 +92,25 @@ export default function SignUp() {
 
     return (
         <ThemeProvider theme={defaultTheme}>
+            <br /><br />
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
                     sx={{
-                        mt: 11,
+                        marginTop: 11,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
                     }}
                 >
-                    {/* Avatar with icon */}
                     <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
                         <LockOutlinedIcon />
                     </Avatar>
-                    {/* Sign Up Title */}
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
-                    {/* Form for user registration */}
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
-                            {/* Full Name Input */}
                             <Grid item xs={12}>
                                 <TextField
                                     autoComplete="given-name"
@@ -127,7 +122,6 @@ export default function SignUp() {
                                     autoFocus
                                 />
                             </Grid>
-                            {/* Email Input */}
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -138,7 +132,6 @@ export default function SignUp() {
                                     autoComplete="email"
                                 />
                             </Grid>
-                            {/* Password Input */}
                             <Grid item xs={12}>
                                 <TextField
                                     required
@@ -151,7 +144,6 @@ export default function SignUp() {
                                 />
                             </Grid>
                         </Grid>
-                        {/* Sign Up Button */}
                         <Button
                             type="submit"
                             fullWidth
@@ -160,10 +152,9 @@ export default function SignUp() {
                         >
                             Sign Up
                         </Button>
-                        {/* Link to Sign In page */}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link onClick={() => navigate('/signin')} variant="body2">
+                                <Link href="/signin" variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

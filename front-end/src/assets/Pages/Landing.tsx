@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-import CategoriesTap from '../Components/CategoriesTap';
-import { ProductsContainer } from '../Components/ProductsContainer';
+import CategoriesTap from '../Components/LandingPageComponents/CategoriesTap';
+import { ProductsContainer } from '../Components/LandingPageComponents/ProductsContainer';
 
 
 

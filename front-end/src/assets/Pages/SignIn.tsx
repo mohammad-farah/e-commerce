@@ -64,7 +64,12 @@ export default function SignIn() {
 
             // Wait for the Snackbar to be visible
             setTimeout(() => {
-                navigate('/home');
+                if ( role === 'admin'){
+                    navigate('/dashboard');
+                }
+                else if ( role === 'user'){
+                    navigate('/home');
+                }
             }, 3000); // Adjust the delay (3000 ms = 3 seconds) as needed
 
         } catch (error) {

@@ -2,7 +2,7 @@ import { useState, useEffect, SyntheticEvent } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { fetchCategories } from '../../Services/fetchCategories';
+import { fetchCategories } from '../../../Services/fetchCategories';
 
 // Define the props for the CategoriesTap component
 interface ComponentProps {
