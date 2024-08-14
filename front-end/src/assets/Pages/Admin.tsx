@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography, Button } from '@mui/material';
-import { OrdersAdminTable } from '../Layouts/AdminPageLayout/OrdersAdminTable';
-import { ProductAdminTabel } from '../Layouts/AdminPageLayout/ProductsAdminTable';
+import { OrdersAdminTable } from '../Layouts/AdminPageLayouts/OrdersAdminTable';
+import { ProductAdminTabel } from '../Layouts/AdminPageLayouts/ProductsAdminTable';
 
 export const Admin = () => {
   const [selectedComponent, setSelectedComponent] = useState<string>('Orders');

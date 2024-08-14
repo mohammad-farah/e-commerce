@@ -122,7 +122,7 @@ import {
     }, [token]);
   
     const handleCheckout = () => {
-      navigate('/order', {
+      navigate('/checkout', {
         state: {
           cartId: userCart?._id,
           totalPrice: userCart?.totalPrice
