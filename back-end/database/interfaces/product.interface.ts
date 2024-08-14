@@ -5,7 +5,7 @@ export interface Product extends Document {
   description: string;
   price: number;
   category: string;
-  image: string;
+  image?: string;
   rate?: number
   createdAt: Date;
   updatedAt: Date;
