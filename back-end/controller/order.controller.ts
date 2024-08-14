@@ -7,6 +7,7 @@ import { raiseWarning, raiseSuccess } from '../utils/response.beautifier';
 
 
 interface ShippingDetails {
+    received_by:string
     address: string,
     city: string,
     state?: string,
@@ -44,6 +45,7 @@ export const createOrder = async (ctx: Context) => {
             products: cart.products,
             totalPrice: cart.totalPrice,
             shipping_details : {
+                received_by : shippingDetails.received_by,
                 address : shippingDetails.address,
                 city : shippingDetails.city,
                 country : shippingDetails.country,

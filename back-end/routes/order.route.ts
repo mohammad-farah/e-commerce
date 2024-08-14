@@ -23,7 +23,7 @@ orderRouter.get('/', userAuthValidator, getOrders);
 orderRouter.get('/:id', userAuthValidator, getOrderById);
 
 // Update order status (Admin only)
-orderRouter.patch('/:id', userAuthValidator, adminAuthValidator ,updateOrderStatus);
+orderRouter.patch('/:id', userAuthValidator , adminAuthValidator ,updateOrderStatus);
 
 // Delete an order (Admin only)
 orderRouter.delete('/:id', userAuthValidator, adminAuthValidator , deleteOrder);

@@ -12,6 +12,7 @@ const OrderSchema: Schema = new Schema(
     ],
     totalPrice: { type: Number, required: true },
     shipping_details: {
+      received_by: { type: String, required: true },
       address: { type: String, required: true },
       city: { type: String, required: true },
       state: { type: String, default : '' },

@@ -10,6 +10,7 @@ export interface Order extends Document {
   products: OrderProduct[];
   totalPrice: number;
   shippingDetails: {
+    received_by :string
     address: string;
     city: string;
     state: string;
