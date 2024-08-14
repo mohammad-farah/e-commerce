@@ -1,3 +1,4 @@
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -9,10 +10,12 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
+// Define the structure of user data and response types
 interface User {
     email: string;
     token: string;
@@ -27,33 +30,50 @@ interface SignInResponse {
     message: string;
     data: SignInResponseData;
 }
-// TODO remove, this demo shouldn't need to reset the theme.
+
+// Create a default theme for the application
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-
-    const [,setCookie,] = useCookies(['token']);
+    const [, setCookie] = useCookies(['token']);
     const navigate = useNavigate();
 
+    // State for Snackbar visibility and message
+    const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+    const [snackbarMessage, setSnackbarMessage] = useState<string>('');
+    const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
+
+    // Handle user authentication
     const authenticateUser = async (email: string, password: string): Promise<void> => {
         try {
             const response = await axios.post<SignInResponse>('http://127.0.0.1:8000/user/login', {
-                email : email,
-                password: password,
+                email,
+                password,
             });
 
-            // place cookies globally 
+            // Extract the token and set it in cookies
             const token = response.data.data.user.token;
             setCookie('token', token, { path: '/' });
-            navigate('/home');
+            
+            // Show success message and navigate after a delay
+            setSnackbarMessage('Login successful!');
+            setSnackbarSeverity('success');
+            setSnackbarOpen(true);
+            
+            // Wait for the Snackbar to be visible
+            setTimeout(() => {
+                navigate('/home');
+            }, 3000); // Adjust the delay (3000 ms = 3 seconds) as needed
 
         } catch (error) {
-            throw new Error('Authentication failed');
-            console.log(error);
-            
+            console.error('Authentication failed', error);
+            setSnackbarMessage('Authentication failed');
+            setSnackbarSeverity('error');
+            setSnackbarOpen(true);
         }
     };
 
+    // Handle form submission
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
@@ -62,12 +82,13 @@ export default function SignIn() {
         authenticateUser(email, password);
     };
 
-   
-    
+    // Handle Snackbar close
+    const handleSnackbarClose = () => {
+        setSnackbarOpen(false);
+    };
 
     return (
-        <ThemeProvider theme={defaultTheme} >
-            <br /><br />
+        <ThemeProvider theme={defaultTheme}>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -85,6 +106,7 @@ export default function SignIn() {
                         Sign in
                     </Typography>
                     <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+                        {/* Email input field */}
                         <TextField
                             margin="normal"
                             required
@@ -95,6 +117,7 @@ export default function SignIn() {
                             autoComplete="email"
                             autoFocus
                         />
+                        {/* Password input field */}
                         <TextField
                             margin="normal"
                             required
@@ -105,6 +128,7 @@ export default function SignIn() {
                             id="password"
                             autoComplete="current-password"
                         />
+                        {/* Submit button */}
                         <Button
                             type="submit"
                             fullWidth
@@ -115,6 +139,7 @@ export default function SignIn() {
                         </Button>
                         <Grid container>
                             <Grid item>
+                                {/* Link to sign up page */}
                                 <Link href="/signup" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
@@ -123,6 +148,17 @@ export default function SignIn() {
                     </Box>
                 </Box>
             </Container>
+
+            {/* Snackbar for feedback */}
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={6000}
+                onClose={handleSnackbarClose}
+            >
+                <Alert onClose={handleSnackbarClose} severity={snackbarSeverity} sx={{ width: '100%' }}>
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
         </ThemeProvider>
     );
 }

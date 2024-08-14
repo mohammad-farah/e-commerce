@@ -18,8 +18,6 @@ export const Landing = () => {
   return (
     <header>
 
-      
-      <br /><br /><br />
       {/* Tap bar for requesting and show the categoreis  */}
       <CategoriesTap
         categoryRetriever={handleCategory}
