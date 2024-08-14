@@ -42,8 +42,11 @@ export const Orders = () => {
 
   return (
     <Box sx={{ width: '90%', mx: 'auto', my: 15 }}>
-      <Typography variant="h4" sx={{ mb: 3 }} color="primary">
+      <Typography variant="h4" color="primary">
         Your Orders
+      </Typography>
+      <Typography variant="body1" sx={{ mb: 3 }}>
+        trace the status of your order
       </Typography>
 
       <TableContainer component={Paper}>
@@ -68,6 +71,13 @@ export const Orders = () => {
           </TableBody>
         </Table>
       </TableContainer>
+
+      <Typography variant="h6" color="primary" sx={{mt:5}}>
+        for any problem reach out:
+      </Typography>
+      <Typography variant="body1" sx={{ mt: 2 }}>
+        +961 ** *** *** <br /> mhd.frh.bus@gmail.com
+      </Typography>
     </Box>
   );
 };

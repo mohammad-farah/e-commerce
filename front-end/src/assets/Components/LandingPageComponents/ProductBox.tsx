@@ -49,7 +49,6 @@ export function Product({ productId, name, price, description, image }: ProductP
 
   // Function to add a product to the cart
   const AddProductToTheCart = async (id: string) => {
-    // Check if the user is logged in
     if (!token) {
       setErrorMessage('Please log in to add products to your cart.');
       setSnackbarIcon(<ErrorIcon sx={{ mr: 1 }} />);
@@ -60,7 +59,6 @@ export function Product({ productId, name, price, description, image }: ProductP
     setLoading(true);
 
     try {
-      // API request to add the product to the cart
       await axios.post<CartResponse>(
         'http://127.0.0.1:8000/cart',
         { productId: id, quantity: 1 },
@@ -95,7 +93,11 @@ export function Product({ productId, name, price, description, image }: ProductP
           xs: '90%',  // Width for small screens
           md: '30%'   // Width for medium screens and up
         },
-        fontFamily: 'Arial'
+        fontFamily: 'Arial',
+        transition: 'transform 0.3s ease-in-out', // Smooth transition effect
+        '&:hover': {
+          transform: 'scale(1.05)' // Slightly increase size on hover
+        }
       }}
     >
       <Box
@@ -120,20 +122,38 @@ export function Product({ productId, name, price, description, image }: ProductP
             <Typography sx={{ textTransform: 'uppercase', fontWeight: 'bold', mr: 1 }}>
               {name}
             </Typography>
-            -
+            
             <Typography color='primary' sx={{ textTransform: 'uppercase', fontWeight: 'bold', ml: 1 }}>
               {price}$
             </Typography>
           </Box>
 
-          <Typography sx={{ textTransform: 'lowercase', fontSize: '.8rem', mt: 1 }}>
+          {/* Description with max height and ellipsis */}
+          <Typography
+            sx={{
+              textTransform: 'lowercase',
+              fontSize: '.8rem',
+              mt: 1,
+              overflow: 'auto', // Set to 'auto' to enable scrolling
+              textOverflow: 'ellipsis',
+              display: '-webkit-box',
+              WebkitLineClamp: 2, // Limit the number of lines
+              WebkitBoxOrient: 'vertical',
+              height: '3rem', // Adjust based on the number of lines
+              scrollbarWidth: 'none', // Hide scrollbar for Firefox
+              msOverflowStyle: 'none', // Hide scrollbar for Internet Explorer and Edge
+              '&::-webkit-scrollbar': {
+                display: 'none' // Hide scrollbar for Webkit browsers (Chrome, Safari)
+              }
+            }}
+          >
             {description}
           </Typography>
 
           <Button
             color='primary'
             startIcon={loading ? <CircularProgress size={14} /> : <AddShoppingCartIcon />}
-            sx={{ fontSize: '.8rem', mt: 1 }}
+            sx={{ fontSize: '.8rem', mt: 2 }}
             onClick={() => AddProductToTheCart(productId)}
             variant='outlined'
             disabled={loading}
