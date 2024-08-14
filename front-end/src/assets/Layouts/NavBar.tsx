@@ -97,8 +97,8 @@ export default function SildeNavBar() {
     const menuItems = [
         { text: 'Home', icon: MainIcons[0], path: '/home', visible: true },
         { text: 'Dashboard', icon: MainIcons[1], path: '/dashboard', visible: role === 'admin' },
-        { text: 'Cart', icon: MainIcons[2], path: '/cart', visible: isAuthenticated && role !== 'user' },
-        { text: 'Orders', icon: MainIcons[3], path: '/orders', visible: isAuthenticated && role !== 'user' }
+        { text: 'Cart', icon: MainIcons[2], path: '/cart', visible: isAuthenticated },
+        { text: 'Orders', icon: MainIcons[3], path: '/orders', visible: isAuthenticated  }
     ];
 
     const authItems = isAuthenticated ? [

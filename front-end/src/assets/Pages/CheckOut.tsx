@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { Box, Typography, Paper, TextField, Button } from '@mui/material';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 
 interface OrderProps {
@@ -13,6 +13,7 @@ export const CkeckOut = () => {
     const location = useLocation();
     const [cookies] = useCookies(['token']);
     const { cartId, totalPrice } = location.state as OrderProps;
+    const navigate = useNavigate();
 
     const token = cookies.token;
 
@@ -43,6 +44,7 @@ export const CkeckOut = () => {
             });
 
             console.log('Order response:', response.data);
+            navigate('/oreders');
         } catch (error) {
             console.error('Error placing order:', error);
         }
