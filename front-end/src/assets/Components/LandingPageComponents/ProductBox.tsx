@@ -6,7 +6,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import CloseIcon from '@mui/icons-material/Close';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 interface CartProduct {
   productId: string;
@@ -44,13 +44,23 @@ export function Product({ productId, name, price, description, image }: ProductP
 
   const [loading, setLoading] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [snackbarIcon, setSnackbarIcon] = useState<React.ReactNode | null>(null);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (snackbarOpen) {
+      timer = setTimeout(() => {
+        setSnackbarOpen(false);
+      }, 1000); // Set to 1 second (1000 milliseconds)
+    }
+    return () => clearTimeout(timer); // Clear timeout if snackbar closes or component unmounts
+  }, [snackbarOpen]);
 
   // Function to add a product to the cart
   const AddProductToTheCart = async (id: string) => {
     if (!token) {
-      setErrorMessage('Please log in to add products to your cart.');
+      setSnackbarMessage('Please log in to add products to your cart.');
       setSnackbarIcon(<ErrorIcon sx={{ mr: 1 }} />);
       setSnackbarOpen(true);
       return;
@@ -64,12 +74,11 @@ export function Product({ productId, name, price, description, image }: ProductP
         { productId: id, quantity: 1 },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      setErrorMessage('Product added to cart!');
+      setSnackbarMessage('Product added to cart!');
       setSnackbarIcon(<CheckCircleIcon sx={{ mr: 1 }} />);
     } catch (error) {
       console.error('Error adding product:', error);
-      setErrorMessage('Failed to add product to cart.');
+      setSnackbarMessage('Failed to add product to cart.');
       setSnackbarIcon(<ErrorIcon sx={{ mr: 1 }} />);
     } finally {
       setSnackbarOpen(true);
@@ -78,7 +87,7 @@ export function Product({ productId, name, price, description, image }: ProductP
   };
 
   // Function to handle closing the Snackbar
-  const handleCloseSnackbar = () => {
+  const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
 
@@ -122,7 +131,6 @@ export function Product({ productId, name, price, description, image }: ProductP
             <Typography sx={{ textTransform: 'uppercase', fontWeight: 'bold', mr: 1 }}>
               {name}
             </Typography>
-            
             <Typography color='primary' sx={{ textTransform: 'uppercase', fontWeight: 'bold', ml: 1 }}>
               {price}$
             </Typography>
@@ -163,20 +171,33 @@ export function Product({ productId, name, price, description, image }: ProductP
         </Box>
       </Box>
 
+      {/* Snackbar component */}
       <Snackbar
         open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
+        autoHideDuration={null} // Disable automatic hiding
+        onClose={handleSnackbarClose}
         message={
-          <span style={{ display: 'flex', alignItems: 'center' }}>
-            {snackbarIcon} {errorMessage}
-          </span>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            {snackbarIcon}
+            {snackbarMessage}
+          </Box>
         }
         action={
-          <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseSnackbar}>
+          <IconButton
+            size="small"
+            aria-label="close"
+            color="inherit"
+            onClick={handleSnackbarClose}
+          >
             <CloseIcon fontSize="small" />
           </IconButton>
         }
+        ContentProps={{
+          sx: {
+            display: 'flex',
+            alignItems: 'center',
+          }
+        }}
       />
     </Box>
   );
