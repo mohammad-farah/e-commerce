@@ -20,6 +20,7 @@ interface User {
     username: string;
     email: string;
     token: string;
+    role: 'user' | 'admin'; // Include the role
 }
 
 interface SignupData {
@@ -36,7 +37,7 @@ interface SignupResponse {
 const defaultTheme = createTheme();
 
 export default function SignUp() {
-    const [, setCookie] = useCookies(['token']);
+    const [, setCookie] = useCookies(['token', 'role']); // Include 'role'
     const navigate = useNavigate();
 
     // State for Snackbar visibility and message
@@ -45,7 +46,7 @@ export default function SignUp() {
     const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error'>('success');
 
     // Handle user registration
-    const authenticateUser = async (email: string, password: string, username: string): Promise<void> => {
+    const registerUser = async (email: string, password: string, username: string): Promise<void> => {
         try {
             const response = await axios.post<SignupResponse>('http://127.0.0.1:8000/user/register', {
                 email,
@@ -53,15 +54,16 @@ export default function SignUp() {
                 username
             });
 
-            // Extract the token and set it in cookies
-            const token = response.data.data.user.token;
+            // Extract the user data and set it in cookies
+            const { token, role } = response.data.data.user;
             setCookie('token', token, { path: '/' });
+            setCookie('role', role, { path: '/' }); // Store role in cookies
 
             // Show success message and navigate after a delay
             setSnackbarMessage('Registration successful!');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
-            
+
             // Wait for the Snackbar to be visible
             setTimeout(() => {
                 navigate('/home');
@@ -82,7 +84,7 @@ export default function SignUp() {
         const email = data.get('email') as string;
         const password = data.get('password') as string;
         const username = data.get('fullname') as string;
-        authenticateUser(email, password, username);
+        registerUser(email, password, username);
     };
 
     // Handle Snackbar close
@@ -96,7 +98,7 @@ export default function SignUp() {
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
+                        mt: 11,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -161,7 +163,7 @@ export default function SignUp() {
                         {/* Link to Sign In page */}
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link href="/signin" variant="body2">
+                                <Link onClick={() => navigate('/signin')} variant="body2">
                                     Already have an account? Sign in
                                 </Link>
                             </Grid>

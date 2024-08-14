@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 interface User {
     email: string;
     token: string;
+    role: 'user' | 'admin'; // Include the role
 }
 
 interface SignInResponseData {
@@ -35,7 +36,7 @@ interface SignInResponse {
 const defaultTheme = createTheme();
 
 export default function SignIn() {
-    const [, setCookie] = useCookies(['token']);
+    const [, setCookie] = useCookies(['token', 'role']); // Include 'role'
     const navigate = useNavigate();
 
     // State for Snackbar visibility and message
@@ -51,15 +52,16 @@ export default function SignIn() {
                 password,
             });
 
-            // Extract the token and set it in cookies
-            const token = response.data.data.user.token;
+            // Extract the user data and set it in cookies
+            const { token, role } = response.data.data.user;
             setCookie('token', token, { path: '/' });
-            
+            setCookie('role', role, { path: '/' }); // Store role in cookies
+
             // Show success message and navigate after a delay
             setSnackbarMessage('Login successful!');
             setSnackbarSeverity('success');
             setSnackbarOpen(true);
-            
+
             // Wait for the Snackbar to be visible
             setTimeout(() => {
                 navigate('/home');
@@ -93,7 +95,7 @@ export default function SignIn() {
                 <CssBaseline />
                 <Box
                     sx={{
-                        marginTop: 8,
+                        mt: 11,
                         display: 'flex',
                         flexDirection: 'column',
                         alignItems: 'center',
@@ -140,7 +142,7 @@ export default function SignIn() {
                         <Grid container>
                             <Grid item>
                                 {/* Link to sign up page */}
-                                <Link href="/signup" variant="body2">
+                                <Link onClick={() => navigate('/signup')} variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
                             </Grid>

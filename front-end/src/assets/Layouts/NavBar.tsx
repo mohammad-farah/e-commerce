@@ -21,9 +21,9 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import LoginIcon from '@mui/icons-material/Login';
 import HowToRegIcon from '@mui/icons-material/HowToReg';
+import { useNavigate } from 'react-router-dom';
 
 const drawerWidth = 240;
-
 
 interface AppBarProps extends MuiAppBarProps {
     open?: boolean;
@@ -50,13 +50,13 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
     ...theme.mixins.toolbar,
     justifyContent: 'flex-end',
 }));
 
 export default function SildeNavBar() {
     const theme = useTheme();
+    const navigate = useNavigate();
     const [open, setOpen] = React.useState(false);
 
     const handleDrawerOpen = () => {
@@ -73,13 +73,13 @@ export default function SildeNavBar() {
         <ShoppingCartIcon color='primary' />
     ];
 
-    const AuthIcons = [ 
+    const AuthIcons = [
         <HowToRegIcon color='primary' />,
         <LoginIcon color='primary' />
     ];
 
     return (
-        <Box sx={{ display: 'flex'}}>
+        <Box sx={{ display: 'flex' }}>
 
             <CssBaseline />
 
@@ -94,7 +94,6 @@ export default function SildeNavBar() {
                         sx={{ mr: 2, ...(open && { display: 'none' }) }}
                     >
                         <MenuIcon />
-
                     </IconButton>
 
                     <Typography variant="h6" noWrap component="div">
@@ -127,7 +126,7 @@ export default function SildeNavBar() {
                     {['Home', 'Dashboard', 'Cart'].map((text, index) => (
                         <ListItem key={text} disablePadding>
                             <ListItemButton
-                                href={text.split('-').join('').toLocaleLowerCase()}
+                                onClick={() => navigate(`/${text.split('-').join('').toLocaleLowerCase()}`)}
                             >
                                 <ListItemIcon>
                                     {MainIcons[index]}
@@ -139,20 +138,18 @@ export default function SildeNavBar() {
                 </List>
                 <Divider />
                 <List>
-                    {
-
-                        ['Sign-in', 'Sign-up'].map((text, index) => (
-                            <ListItem key={text} disablePadding>
-                                <ListItemButton
-                                    href={text.split('-').join('').toLocaleLowerCase()}
-                                >
-                                    <ListItemIcon>
-                                        {AuthIcons[index]}
-                                    </ListItemIcon>
-                                    <ListItemText primary={text} />
-                                </ListItemButton>
-                            </ListItem>
-                        ))}
+                    {['Sign-in', 'Sign-up'].map((text, index) => (
+                        <ListItem key={text} disablePadding>
+                            <ListItemButton
+                                onClick={() => navigate(`/${text.split('-').join('').toLocaleLowerCase()}`)}
+                            >
+                                <ListItemIcon>
+                                    {AuthIcons[index]}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))}
                 </List>
             </Drawer>
         </Box>
