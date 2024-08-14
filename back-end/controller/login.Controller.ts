@@ -18,7 +18,8 @@ interface RequestBody extends BaseBody {
 }
 
 interface ResponseBody extends BaseBody {
-    token : string
+    token : string,
+    role : string
 }
 
 
@@ -27,6 +28,9 @@ export const login = async (ctx: Context) => {
     try{
         
         const user = ctx.request.body as RequestBody;
+
+        console.log();
+        
            
         // generate access token for user
         const token = generateToken( ctx.userData.id , ctx.userData.pwd , ctx.userData.role);
@@ -34,7 +38,8 @@ export const login = async (ctx: Context) => {
         // Send a success response
         const response : ResponseBody = {
             email: user.email,
-            token : token
+            token : token,
+            role : ctx.userData.role
         } 
    
         ctx.status = 200;

@@ -18,7 +18,8 @@ interface RequestBody extends BaseBody {
 }
 
 interface ResponseBody extends BaseBody {
-    token: string
+    token: string,
+    role : string
 }
 
 
@@ -47,7 +48,8 @@ export const  registration = async (ctx: Context) => {
         const response: ResponseBody = {
             username: user.username,
             email: user.email,
-            token: token
+            token: token,
+            role: newUser.role 
         }
 
         ctx.status = 200;
